@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <com.houxy.wificar.view.MJPEGView
+        android:id="@+id/mySurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        />
+
+    <ImageButton
+        android:id="@+id/btnLeft"
+        android:src="@drawable/sym_left"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="@string/turn_left"
+        />
+
+    <ImageButton
+        android:id="@+id/btnBackward"
+        android:src="@drawable/sym_backward"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_toEndOf="@id/btnLeft"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/turn_backward"
+        />
+
+    <ImageButton
+        android:id="@+id/btnStop"
+        android:src="@drawable/sym_stop"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@id/btnBackward"
+        android:layout_above="@id/btnBackward"
+        android:contentDescription="@string/stop"
+        />
+
+    <ImageButton
+        android:id="@+id/btnRight"
+        android:src="@drawable/sym_right"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/btnLeft"
+        android:layout_toEndOf="@id/btnStop"
+        android:contentDescription="@string/turn_right"
+        />
+
+    <ImageButton
+        android:id="@+id/btnForward"
+        android:src="@drawable/sym_forward"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@id/btnBackward"
+        android:layout_above="@id/btnStop"
+        android:contentDescription="@string/stop"
+        />
+
+
+    <ImageButton
+        android:id="@+id/btnTakePic"
+        android:src="@drawable/take_pic"
+        android:background="#00000000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="15dp"
+        android:contentDescription="@string/take_pic"
+        />
+
+    <TextView
+        android:id="@+id/tvLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="100dp"
+        android:text="@string/log"
+        android:textSize="12sp"
+        android:layout_marginStart="15dp"
+        android:layout_alignBottom="@+id/btnTakePic"
+        android:layout_alignStart="@id/btnLeft"
+        />
+
+
+</RelativeLayout>

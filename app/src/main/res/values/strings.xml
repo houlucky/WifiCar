@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">WifiCar</string>
+    <string name="turn_left">左</string>
+    <string name="turn_right">右</string>
+    <string name="turn_forward">前</string>
+    <string name="turn_backward">后</string>
+    <string name="stop">停</string>
+    <string name="port">控制端口</string>
+    <string name="control_address">控制地址</string>
+    <string name="video_address">视频地址</string>
+
+    <string name="command_turn_left">FF000300FF</string>
+    <string name="command_turn_right">FF000400FF</string>
+    <string name="command_turn_forward">FF000100FF</string>
+    <string name="command_turn_backward">FF000200FF</string>
+    <string name="command_stop">FF000000FF</string>
+    <string name="command_port">2001</string>
+    <string name="url_control_address">192.168.1.1</string>
+    <string name="url_video_address">http://192.168.2.1:8080/?action=stream</string>
+
+    <string name="btn_text_start">开始</string>
+    <string name="btn_text_setting">设置</string>
+    <string name="comm_save_success">指令保存成功！</string>
+    <string name="data_not_save">数据未保存！</string>
+    <string name="confirm">确认</string>
+    <string name="quit">退出</string>
+    <string name="setting">设置</string>
+    <string name="indicator">指示器</string>
+    <string name="take_pic">拍摄照片</string>
+    <string name="log">状态显示</string>
+    <string name="wifi_not_open">初始化连接路由器失败，wifi未开启，请手动开启后重试！</string>
+    <string name="wifi_state_not_connect">初始化连接路由器失败，wifi未连接，或者路由器状态异常！！</string>
+    <string name="wait_to_send">Please send the data after one second</string>
+    <string name="status_abnormal">状态异常, 无法发送命令....</string>
+</resources>
