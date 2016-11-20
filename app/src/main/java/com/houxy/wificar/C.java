@@ -23,10 +23,8 @@ public class C {
     public static final byte[] COMM_HEART_BREAK = {(byte) 0xFF, (byte)0xEE, (byte)0xE1, 0x00, (byte) 0xFF};
 
 
-    public static  String CAMERA_VIDEO_URL = "http://192.168.2.1:8080/?action=stream";
-    public static  String CAMERA_VIDEO_URL_TEST = "";
-    public static  String ROUTER_CONTROL_URL = "192.168.2.1";
-    public static  String ROUTER_CONTROL_URL_TEST = "192.168.1.1";
+    public static  String CAMERA_VIDEO_URL = "http://192.168.1.1:8080/?action=stream";
+    public static  String ROUTER_CONTROL_URL = "192.168.1.1";
     public static  int ROUTER_CONTROL_PORT = 2001;
     public static  int ROUTER_CONTROL_PORT_TEST = 2001;
     public static final String WIFI_SSID_PERFIX = "robot";

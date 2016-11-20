@@ -22,6 +22,7 @@ import com.houxy.wificar.SocketClient;
 import com.houxy.wificar.runn.ReceiveRunnable;
 import com.houxy.wificar.utils.NetUtil;
 import com.houxy.wificar.utils.SPUtil;
+import com.houxy.wificar.view.MJPEGView;
 
 import java.util.Arrays;
 
@@ -56,17 +57,15 @@ import static com.houxy.wificar.C.WIFI_STATE_NOT_CONNECTED;
 public class ControlActivity extends AppCompatActivity{
 
 
-    //    @BindView(R.id.mySurfaceView) MjpegView mSurfaceView;
+    @BindView(R.id.mySurfaceView) MJPEGView mSurfaceView;
     @BindView(R.id.btnLeft) ImageButton mBtnLeft;
     @BindView(R.id.btnBackward) ImageButton mBtnBackward;
     @BindView(R.id.btnStop) ImageButton mBtnStop;
     @BindView(R.id.btnRight) ImageButton mBtnRight;
     @BindView(R.id.btnForward) ImageButton mBtnForward;
-    @BindView(R.id.btnSetting) ImageButton mBtnSetting;
     @BindView(R.id.btnTakePic) ImageButton mBtnTakePic;
     @BindView(R.id.tvLog) TextView mTvLog;
 
-    private boolean bAnimationEnabled = true;
     private boolean bHeartBreakFlag = false;
     private boolean bReadyToSendCmd = false;
     private boolean mQuitFlag = false;
@@ -86,7 +85,7 @@ public class ControlActivity extends AppCompatActivity{
                     mTvLog.setText("成功连接到路由器!");
                     Message message = new Message();
                     message.what = MSG_ID_START_CHECK;
-                    mHandler.sendMessageDelayed(msg, 1000);
+                    mHandler.sendMessageDelayed(message, 1000);
                 case MSG_ID_START_CHECK:
                     mTvLog.setText("可以开始发送数据！！！");
                     bReadyToSendCmd = true;
@@ -209,7 +208,7 @@ public class ControlActivity extends AppCompatActivity{
             String cameraUrl = CAMERA_VIDEO_URL;
 
             if (null != cameraUrl && cameraUrl.length() > 4) {
-//                mSurfaceView.setSource(cameraUrl);//��ʼ��Camera
+                mSurfaceView.setSource(cameraUrl);//��ʼ��Camera
             }
         } else if (WIFI_STATE_NOT_CONNECTED == status) {
             mTvLog.setText(R.string.wifi_state_not_connect);
