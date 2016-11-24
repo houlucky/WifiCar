@@ -1,33 +1,49 @@
 package com.houxy.wificar;
 
+import android.util.Log;
+
+import com.houxy.wificar.i.OnSendMessageListener;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 
 /**
  * Created by Houxy on 2016/11/15.
  */
 
 public class SocketClient {
-    static Socket client = null;
+    private  Socket client = null;
 
-    public SocketClient(String site, int port) {
+    public SocketClient(final String site, final int port) {
         try {
-            client = new Socket(site, port);
-            // System.out.println("Client is created! site:"+site+" port:"+port);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        client = new Socket(site, port);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void sendMsg(byte[] msg) {
+    public void sendMsg(byte[] msg, OnSendMessageListener listener) {
         try {
             OutputStream out = client.getOutputStream();
             out.write(msg);
             out.flush();
+            listener.onSuccess(msg);
+            Log.d("TAG", "comm : " + Arrays.toString(msg));
         } catch (IOException e) {
             e.printStackTrace();
+            listener.onFailed(e);
         }
     }
 
@@ -60,10 +76,6 @@ public class SocketClient {
             }
         }
         return null;
-    }
-
-    public static void main(String[] args) throws Exception {
-
     }
 }
 

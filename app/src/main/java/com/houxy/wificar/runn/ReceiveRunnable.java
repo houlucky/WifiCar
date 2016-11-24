@@ -107,7 +107,7 @@ public abstract class ReceiveRunnable implements Runnable{
 
     private int appendBuffer(byte[] buffer, int len, byte[] dstBuffer, int dstLen) {
         int j = 0;
-        int i = dstLen;
+        int i;
         for (i = dstLen; i < C.COMMAND_LENGTH && j < len; i++) {
             dstBuffer[i] = buffer[j];
             j++;

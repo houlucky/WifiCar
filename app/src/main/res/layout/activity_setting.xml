@@ -171,6 +171,7 @@
             android:text="@string/command_port"
             android:hint="@string/command_port"
             android:textSize="14sp"
+            android:inputType="number"
             />
 
         <TextView

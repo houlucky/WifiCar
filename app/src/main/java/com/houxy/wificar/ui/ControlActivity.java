@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.houxy.wificar.C;
 import com.houxy.wificar.R;
 import com.houxy.wificar.SocketClient;
+import com.houxy.wificar.i.OnSendMessageListener;
 import com.houxy.wificar.runn.ReceiveRunnable;
 import com.houxy.wificar.utils.NetUtil;
 import com.houxy.wificar.utils.SPUtil;
@@ -29,12 +30,13 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.houxy.wificar.C.CAMERA_VIDEO_URL;
 import static com.houxy.wificar.C.COMM_BACKWARD;
 import static com.houxy.wificar.C.COMM_FORWARD;
 import static com.houxy.wificar.C.COMM_LEFT;
 import static com.houxy.wificar.C.COMM_RIGHT;
 import static com.houxy.wificar.C.COMM_STOP;
+import static com.houxy.wificar.C.MESSAGE_SEND_FAILED;
+import static com.houxy.wificar.C.MESSAGE_SEND_SUCCESS;
 import static com.houxy.wificar.C.MSG_ID_CLEAR_QUIT_FLAG;
 import static com.houxy.wificar.C.MSG_ID_CON_SUCCESS;
 import static com.houxy.wificar.C.MSG_ID_ERR_CONN;
@@ -43,8 +45,6 @@ import static com.houxy.wificar.C.MSG_ID_LOOP_END;
 import static com.houxy.wificar.C.MSG_ID_LOOP_START;
 import static com.houxy.wificar.C.MSG_ID_START_CHECK;
 import static com.houxy.wificar.C.QUIT_BUTTON_PRESS_INTERVAL;
-import static com.houxy.wificar.C.ROUTER_CONTROL_PORT;
-import static com.houxy.wificar.C.ROUTER_CONTROL_URL;
 import static com.houxy.wificar.C.STATUS_CONNECTED;
 import static com.houxy.wificar.C.STATUS_INIT;
 import static com.houxy.wificar.C.WIFI_STATE_CONNECTED;
@@ -75,6 +75,10 @@ public class ControlActivity extends AppCompatActivity{
     private SocketClient mTcpSocket;
     private Thread mThreadClient = null;
 
+    public   String camera_video_url = "http://192.168.1.1:8080/?action=stream";
+    public   String router_control_url = "192.168.1.1";
+    public   int router_control_port = 2001;
+
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -95,6 +99,12 @@ public class ControlActivity extends AppCompatActivity{
                     break;
                 case MSG_ID_CLEAR_QUIT_FLAG:
                     mQuitFlag = false;
+                    break;
+                case MESSAGE_SEND_SUCCESS:
+                    mTvLog.setText("已发送:" + Arrays.toString((byte[]) msg.obj));
+                    break;
+                case MESSAGE_SEND_FAILED:
+                    mTvLog.setText("发送失败:" + (msg.obj).toString());
                     break;
                 default:
                     break;
@@ -186,7 +196,25 @@ public class ControlActivity extends AppCompatActivity{
         }
 
         try {
-            mTcpSocket.sendMsg(data);
+            mTcpSocket.sendMsg(data, new OnSendMessageListener() {
+                @Override
+                public void onSuccess(byte[] s) {
+                    if(!Arrays.equals(s,COMM_STOP)){
+                        Message message = new Message();
+                        message.what = MESSAGE_SEND_SUCCESS;
+                        message.obj = s;
+                        mHandler.sendMessage(message);
+                    }
+                }
+
+                @Override
+                public void onFailed(Exception e) {
+                    Message message = new Message();
+                    message.what = MESSAGE_SEND_FAILED;
+                    message.obj = e;
+                    mHandler.sendMessage(message);
+                }
+            });
         } catch (Exception e) {
             Log.i("Socket", e.getMessage() != null ? e.getMessage() : "sendCommand error!");
         }
@@ -197,7 +225,6 @@ public class ControlActivity extends AppCompatActivity{
         int status = NetUtil.getWifiStatus(this);
         if (WIFI_STATE_CONNECTED == status) {
             initWifiConnection();
-//            mThreadClient = new Thread(mRunnable);
             mThreadClient = new Thread(new ReceiveRunnable(mTcpSocket.getInputStream()) {
                 @Override
                 public void onMessageReceived(byte[] data) {
@@ -205,7 +232,7 @@ public class ControlActivity extends AppCompatActivity{
                 }
             });
             mThreadClient.start();
-            String cameraUrl = CAMERA_VIDEO_URL;
+            String cameraUrl = camera_video_url;
 
             if (null != cameraUrl && cameraUrl.length() > 4) {
                 mSurfaceView.setSource(cameraUrl);//��ʼ��Camera
@@ -224,8 +251,8 @@ public class ControlActivity extends AppCompatActivity{
             if (mTcpSocket != null) {
                 mTcpSocket.closeSocket();
             }
-            String clientUrl = ROUTER_CONTROL_URL;
-            int clientPort = ROUTER_CONTROL_PORT;
+            String clientUrl = router_control_url;
+            int clientPort = router_control_port;
             mTcpSocket = new SocketClient(clientUrl, clientPort);
             Log.i("Socket", "Wifi Connect created ip=" + clientUrl + " port=" + clientPort);
             mWifiStatus = STATUS_CONNECTED;
@@ -247,10 +274,9 @@ public class ControlActivity extends AppCompatActivity{
     protected void onResume() {
         int status = NetUtil.getWifiStatus(this);
         if (WIFI_STATE_CONNECTED == status ) {
-            String cameraUrl = CAMERA_VIDEO_URL;
-
+            String cameraUrl = camera_video_url;
             if (null != cameraUrl && cameraUrl.length() > 4) {
-//                backgroundView.setSource(cameraUrl);
+                mSurfaceView.setSource(cameraUrl);
             }
         }
         super.onResume();
@@ -295,19 +321,9 @@ public class ControlActivity extends AppCompatActivity{
      */
     void initSettings() {
 
-        CAMERA_VIDEO_URL = SPUtil.getVideoAddress();
-
-        String RouterUrl = SPUtil.getControlAddress();
-        int index = RouterUrl.indexOf(":");
-        String routerIP = "";
-        int port = 0;
-        if (index > 0) {   //将路由器的Ip和端口分开
-            routerIP = RouterUrl.substring(0, index);
-            String routerPort = RouterUrl.substring(index + 1, RouterUrl.length());
-            port = Integer.parseInt(routerPort);
-        }
-        ROUTER_CONTROL_URL = routerIP;
-        ROUTER_CONTROL_PORT = port;
+        camera_video_url = SPUtil.getVideoAddress();
+        router_control_url = SPUtil.getControlAddress();
+        router_control_port = Integer.parseInt(SPUtil.getControlPort());
 
         //初始化控制指令
         initControlComm();

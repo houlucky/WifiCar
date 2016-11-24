@@ -23,10 +23,7 @@ public class C {
     public static final byte[] COMM_HEART_BREAK = {(byte) 0xFF, (byte)0xEE, (byte)0xE1, 0x00, (byte) 0xFF};
 
 
-    public static  String CAMERA_VIDEO_URL = "http://192.168.1.1:8080/?action=stream";
-    public static  String ROUTER_CONTROL_URL = "192.168.1.1";
-    public static  int ROUTER_CONTROL_PORT = 2001;
-    public static  int ROUTER_CONTROL_PORT_TEST = 2001;
+
     public static final String WIFI_SSID_PERFIX = "robot";
 
 
@@ -38,6 +35,8 @@ public class C {
     public static final int MSG_ID_START_CHECK = 1006;
     public static final int MSG_ID_ERR_INIT_READ = 1007;
     public static final int MSG_ID_CLEAR_QUIT_FLAG = 1008;
+    public static final int MESSAGE_SEND_SUCCESS = 0;
+    public static final int MESSAGE_SEND_FAILED = 1;
 
     public static final int MSG_ID_LOOP_START = 1010;
     public static final int MSG_ID_HEART_BREAK_RECEIVE = 1011;
@@ -54,10 +53,6 @@ public class C {
     public static final int WIFI_STATE_DISABLED = 0x3001;
     public static final int WIFI_STATE_NOT_CONNECTED = 0x3002;
     public static final int WIFI_STATE_CONNECTED = 0x3003;
-
-    public static final int MIN_GEAR_STEP = 5;
-    public static final int MAX_GEAR_VALUE = 180;
-    public static final int INIT_GEAR_VALUE = 50;
 
     public static final byte COMMAND_PERFIX = -1;
     public static final int HEART_BREAK_CHECK_INTERVAL = 8000;//ms

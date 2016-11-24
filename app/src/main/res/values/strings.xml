@@ -27,7 +27,7 @@
     <string name="setting">设置</string>
     <string name="indicator">指示器</string>
     <string name="take_pic">拍摄照片</string>
-    <string name="log">已发送:FFXXXXXXFF</string>
+    <string name="log">已发送:[-1,0,0, 0,-1]</string>
     <string name="wifi_not_open">初始化连接路由器失败，wifi未开启，请手动开启后重试！</string>
     <string name="wifi_state_not_connect">初始化连接路由器失败，wifi未连接，或者路由器状态异常！！</string>
     <string name="wait_to_send">Please send the data after one second</string>
